@@ -16,7 +16,7 @@ fetch("https://restcountries.com/v3.1/all")
           <p class="card-text"><b>Capital :</b> ${item.capital}</p>
           <p class="card-text"><b>Region :</b> ${item.region}</p>
           <p class="card-text"><b>Country Code :</b> ${item.cca3}</p> 
-          <a href="# "id='${item.capital}' onclick='handleClick(this.id)' class="btn btn-transparent border border-dark">Check Weather</a>
+          <button id='${item.capital}' onclick='handleClick(this)' class="btn btn-transparent border border-dark">Check Weather</button>
         </div>
       </div>
     </div>
@@ -24,16 +24,14 @@ fetch("https://restcountries.com/v3.1/all")
     });
   });
 
-function handleClick(capital) {
-  fetch(`https://restcountries.com/v3.1/capital/${capital}`)
+function handleClick(el) {
+  fetch(`https://restcountries.com/v3.1/capital/${el.id}`)
     .then((res) => res.json())
     .then((data) => {
       fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${data[0].latlng[0]}&lon=${data[0].latlng[1]}&appid=9c543c796d50f05f34fd9aa7f32d4b9c`
       )
         .then((res) => res.json())
-        .then(
-          (data) => (document.querySelector(".btn").innerHTML = data.main.temp)
-        );
+        .then((data) => (el.innerHTML = data.main.temp+"&#176;F"));
     });
 }
